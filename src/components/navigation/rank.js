@@ -5,11 +5,11 @@ const Rank = ()=>{
 
     return(
     <div>
-        <div className='white f3'>
+        <div className='black f3'>
             {'Your current rank is'}
         
         </div>
-        <div className='white f1'>
+        <div className='black f1'>
             {'#5'}
         </div>
 

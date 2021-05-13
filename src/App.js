@@ -3,6 +3,7 @@ import './App.css'
 import Clarifai from 'clarifai'
 import Logo from './components/navigation/Logo/logo'
 import React from 'react'
+import Register from './components/navigation/register'
 import Imagelinkform from './components/navigation/Imagelinkform'
 import Rank from './components/navigation/rank'
 import SignIn from './components/navigation/signIn.js'
@@ -58,6 +59,18 @@ class App extends React.Component {
 
   }
 
+  onRouteChange = () => {
+    this.setState({route: 'home'})
+  }
+
+  onRouteChange2 = () => {
+    this.setState({route : 'signin'})
+  }
+
+  onRouteChange3 = () => {
+    this.setState({route : 'register'})
+  }
+
   render(){
   return (
     <div className='App'>
@@ -65,7 +78,7 @@ class App extends React.Component {
         params={{ 
           particles: { 
             number: { 
-              value: 200, 
+              value: 140, 
               density: { 
                 enable: true, 
                 value_area: 1000, 
@@ -74,22 +87,27 @@ class App extends React.Component {
           }, 
         }} 
       /> 
-    <Nav/>
-    {/* <SignIn/> */}
-    <Logo/>
+    <Nav onRouteChange2 = {this.onRouteChange2}/>
+    { this.state.route ==='signin' ?
+    <SignIn onRouteChange = {this.onRouteChange} onRouteChange3={this.onRouteChange3}/>
+    : (
+      this.state.route ==='home' ?
+    <div>
+     <Logo/>
     <Rank/>
     <Imagelinkform 
     onInputChange={this.onInputChange} 
     onButtonSubmit = {this.onButtonSubmit}/>
     <FaceRecognition imageUrl={this.state.imageUrl}  box = {this.state.box} />
-
     </div>
-
-
+    : <Register onRouteChange = {this.onRouteChange}/>
+    )
+    }
+    </div>
   )
   }
 }
 
 export default App;
 
-// https://www.thestatesman.com/wp-content/uploads/2017/08/1493458748-beauty-face-517.jpg
+// https://www.thestatesman.com/wp-content/uploads/2017/08/1493458748-beauty-face-517.jpg\

@@ -6,7 +6,7 @@ const Imagelinkform = ({onInputChange, onButtonSubmit})=>{
     return(
         <div >
         <p className='f3'>
-            {'This Website Detects Faces, Enter a Picture to Try It!'}
+            {'This Website Detects Monarch Butterflies! Upload Your Sightings'}
         </p>
         <div className='center'>
             <div className='center pa4 br3 shadow-5'>
@@ -15,7 +15,7 @@ const Imagelinkform = ({onInputChange, onButtonSubmit})=>{
              type='t'
              onChange={onInputChange}/>
             <button 
-            className='w-30 grow f4 link ph3 pv2 dib white bg-light-purple' 
+            className='w-30 grow f4 link ph3 pv2 dib white bg-black' 
             onClick={onButtonSubmit}>Detect</button>
             </div>
         </div>

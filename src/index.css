@@ -2,7 +2,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(202,118,213,1) 27%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgb(235, 138, 11) 27%, rgb(90, 47, 7) 100%);
   font-family:'Courier New';
 }
 
@@ -13,7 +13,7 @@ code {
 
 
 .Tilt{
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(202,118,213,1) 27%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgb(235, 138, 11) 27%, rgb(90, 47, 7) 100%);
 }
 
 .center{
