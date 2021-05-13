@@ -22,7 +22,8 @@ class App extends React.Component {
       input:'',
       imageUrl: '',
       box: {}, 
-      route: 'signin'
+      route: 'signin',
+      isSignedIn: false
     }
   }
 
@@ -61,14 +62,17 @@ class App extends React.Component {
 
   onRouteChange = () => {
     this.setState({route: 'home'})
+    this.setState({isSignedIn : true})
   }
 
   onRouteChange2 = () => {
     this.setState({route : 'signin'})
+    this.setState({isSignedIn : false})
   }
 
   onRouteChange3 = () => {
     this.setState({route : 'register'})
+    this.setState({isSignedIn: true})
   }
 
   render(){
@@ -87,7 +91,7 @@ class App extends React.Component {
           }, 
         }} 
       /> 
-    <Nav onRouteChange2 = {this.onRouteChange2}/>
+    <Nav onRouteChange2 = {this.onRouteChange2} isSignedIn = {this.state.isSignedIn}/>
     { this.state.route ==='signin' ?
     <SignIn onRouteChange = {this.onRouteChange} onRouteChange3={this.onRouteChange3}/>
     : (
