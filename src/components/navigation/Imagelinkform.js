@@ -1,13 +1,18 @@
 import React from 'react'
 import 'tachyons'
 
-const Imagelinkform = ({onInputChange, onButtonSubmit})=>{
+const Imagelinkform = ({onInputChange, onButtonSubmit, handleData})=>{
 
     return(
         <div >
+        {handleData.length < 1 ?
         <p className='f3'>
             {'This Website Detects Monarch Butterflies! Upload Your Sightings'}
         </p>
+        : <p className ='f4'>
+            {handleData}
+        </p>
+        }
         <div className='center'>
             <div className='center pa4 br3 shadow-5'>
             <input 

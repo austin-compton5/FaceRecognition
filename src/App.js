@@ -9,10 +9,11 @@ import Rank from './components/navigation/rank'
 import SignIn from './components/navigation/signIn.js'
 import Particles from 'react-particles-js';
 import FaceRecognition from './components/navigation/facerecognition'
+import { version } from 'react-dom'
 
 
 const app = new Clarifai.App({
-  apiKey: 'f90578dca49641d1a128023b062ebc0f'
+  apiKey: '42a188ff3bc8437aafca406922e37cd5'
  });
 
 class App extends React.Component {
@@ -23,22 +24,23 @@ class App extends React.Component {
       imageUrl: '',
       box: {}, 
       route: 'signin',
-      isSignedIn: false
+      isSignedIn: false,
+      handleData: ''
     }
   }
 
-  calculateFace(data){
-    const clariFai = data.outputs[0].data.regions[0].region_info.bounding_box
-    const image = document.getElementById('image')
-    const width = Number(image.width)
-    const height = Number(image.height)
-
+  calculateButterflyData(data){
+    let adjustedDataSingleMonarchs = data.outputs[0].data.concepts[0].value
+    let response = ``
+    if(adjustedDataSingleMonarchs * 100 > 75){
+      response = `Confirmed! We are ${adjustedDataSingleMonarchs.toFixed(4)*100} percent sure your sighting is a monarch`
+    }else if(adjustedDataSingleMonarchs * 100 < 75 && adjustedDataSingleMonarchs * 100 > 50){
+      response = `We're unsure if your sighting was a monarch`
+    }else{
+      response = 'This sighting is not a monarch butterfly'
+    }
     return{
-      top: clariFai.top_row * 100,
-      right: 100 - clariFai.right_col * 100,
-      left: clariFai.left_col * 100,
-      bottom: 100 - clariFai.bottom_row * 100
-      
+      response
     }
     
     }
@@ -49,16 +51,12 @@ class App extends React.Component {
 
   onButtonSubmit = () =>{
     this.setState({imageUrl: this.state.input})
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-    .then(response => this.calcuateFaceLocation(this.calculateFace(response)))
+    app.models.predict({id: 'monarch-butterfly-26127', version:'fae4b919adfe4c3d8a022a3a900f3bbb'}, this.state.input)
+    .then(response => this.setState({handleData: this.calculateButterflyData(response).response}))
     .catch(er => console.log(er))
   }
 
-  calcuateFaceLocation(box){
-    this.setState({box: box})
-    console.log(this.state.box)
 
-  }
 
   onRouteChange = () => {
     this.setState({route: 'home'})
@@ -68,12 +66,15 @@ class App extends React.Component {
   onRouteChange2 = () => {
     this.setState({route : 'signin'})
     this.setState({isSignedIn : false})
+    this.setState({handleData: ''})
+    this.setState({imageUrl: ''})
   }
 
   onRouteChange3 = () => {
     this.setState({route : 'register'})
     this.setState({isSignedIn: true})
   }
+
 
   render(){
   return (
@@ -101,7 +102,8 @@ class App extends React.Component {
     <Rank/>
     <Imagelinkform 
     onInputChange={this.onInputChange} 
-    onButtonSubmit = {this.onButtonSubmit}/>
+    onButtonSubmit = {this.onButtonSubmit}
+    handleData = {this.state.handleData}/>
     <FaceRecognition imageUrl={this.state.imageUrl}  box = {this.state.box} />
     </div>
     : <Register onRouteChange = {this.onRouteChange}/>
@@ -113,5 +115,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-// https://www.thestatesman.com/wp-content/uploads/2017/08/1493458748-beauty-face-517.jpg\
