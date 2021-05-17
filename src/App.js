@@ -25,8 +25,30 @@ class App extends React.Component {
       box: {}, 
       route: 'signin',
       isSignedIn: false,
-      handleData: ''
+      handleData: '',
+      user : {
+        id: '',
+        name: '',
+        email: '',
+        entries: '',
+      }
     }
+  }
+
+  componentDidMount(){
+    fetch('http://localhost:3000/')
+      .then(response => response.json())
+      .then(console.log)
+  }
+
+  loadCurrentUserData = (data)=>{
+    this.setState({user : {
+      id : data.id,
+      name : data.name,
+      email: data.email,
+      entries: data.entries
+    }})
+    console.log(this.state.user)
   }
 
   calculateButterflyData(data){
@@ -37,7 +59,7 @@ class App extends React.Component {
     }else if(adjustedDataSingleMonarchs * 100 < 75 && adjustedDataSingleMonarchs * 100 > 50){
       response = `We're unsure if your sighting was a monarch`
     }else{
-      response = 'This sighting is not a monarch butterfly'
+      response = 'Oops! This sighting probably was not a monarch'
     }
     return{
       response
@@ -106,7 +128,7 @@ class App extends React.Component {
     handleData = {this.state.handleData}/>
     <FaceRecognition imageUrl={this.state.imageUrl}  box = {this.state.box} />
     </div>
-    : <Register onRouteChange = {this.onRouteChange}/>
+    : <Register onRouteChange = {this.onRouteChange} loadCurrentUserData={this.loadCurrentUserData}/>
     )
     }
     </div>
