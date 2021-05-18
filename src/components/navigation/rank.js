@@ -1,16 +1,16 @@
 import React from 'react'
 import 'tachyons'
 
-const Rank = ()=>{
+const Rank = ({userName, userEntries})=>{
 
     return(
     <div>
         <div className='black f3'>
-            {'Your current rank is'}
+            {`${userName},Your current number of sightings is`}
         
         </div>
         <div className='black f1'>
-            {'#5'}
+            {`${userEntries}`}
         </div>
 
     </div>

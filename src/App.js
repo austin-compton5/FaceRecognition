@@ -30,7 +30,7 @@ class App extends React.Component {
         id: '',
         name: '',
         email: '',
-        entries: '',
+        entries: 0,
       }
     }
   }
@@ -75,6 +75,23 @@ class App extends React.Component {
     this.setState({imageUrl: this.state.input})
     app.models.predict({id: 'monarch-butterfly-26127', version:'fae4b919adfe4c3d8a022a3a900f3bbb'}, this.state.input)
     .then(response => this.setState({handleData: this.calculateButterflyData(response).response}))
+    .then(response=>{
+      if(response){
+        fetch('http://localhost:3000/register', {
+          method: 'put',
+          headers: {"Content-Type":'application/json'},
+          body: JSON.stringify({
+            id:this.state.user.id
+          })
+        })
+      }
+    })
+    .then(response => response.json())
+    .then(count => {
+      this.setState({users : {
+        entries: count
+      }})
+    })
     .catch(er => console.log(er))
   }
 
@@ -121,7 +138,7 @@ class App extends React.Component {
       this.state.route ==='home' ?
     <div>
      <Logo/>
-    <Rank/>
+    <Rank userName={this.state.user.name} userEntries={this.state.user.entries}/>
     <Imagelinkform 
     onInputChange={this.onInputChange} 
     onButtonSubmit = {this.onButtonSubmit}
