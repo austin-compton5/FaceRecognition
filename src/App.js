@@ -9,7 +9,7 @@ import Rank from './components/navigation/rank'
 import SignIn from './components/navigation/signIn.js'
 import Particles from 'react-particles-js';
 import FaceRecognition from './components/navigation/facerecognition'
-import { version } from 'react-dom'
+// import { version } from 'react-dom'
 
 
 const app = new Clarifai.App({
@@ -17,8 +17,8 @@ const app = new Clarifai.App({
  });
 
 class App extends React.Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state={
       input:'',
       imageUrl: '',
@@ -51,6 +51,36 @@ class App extends React.Component {
     console.log(this.state.user)
   }
 
+  clearUserData = () => {
+    this.setState({
+      user : {
+        id: '',
+        name:  '', 
+        email :  '',
+        entries : 0
+      }
+    })
+    console.log(this.state.user)
+  }
+  returnUser = () =>{
+    return this.state.user
+  }
+
+  setImageCount = () =>{
+        fetch('http://localhost:3000/images', {
+          method: 'put',
+          headers: {"Content-Type":'application/json'},
+          body: JSON.stringify({
+            id:this.state.user.id
+          })
+        })
+        .then(response => response.json())
+        .then(count => {
+          this.setState(Object.assign(this.state.user, {entries: count}))
+    })
+ }
+
+
   calculateButterflyData(data){
     let adjustedDataSingleMonarchs = data.outputs[0].data.concepts[0].value
     let response = ``
@@ -73,28 +103,12 @@ class App extends React.Component {
 
   onButtonSubmit = () =>{
     this.setState({imageUrl: this.state.input})
-    app.models.predict({id: 'monarch-butterfly-26127', version:'fae4b919adfe4c3d8a022a3a900f3bbb'}, this.state.input)
-    .then(response => this.setState({handleData: this.calculateButterflyData(response).response}))
-    .then(response=>{
-      if(response){
-        fetch('http://localhost:3000/register', {
-          method: 'put',
-          headers: {"Content-Type":'application/json'},
-          body: JSON.stringify({
-            id:this.state.user.id
-          })
-        })
-      }
-    })
-    .then(response => response.json())
-    .then(count => {
-      this.setState({users : {
-        entries: count
-      }})
-    })
+    app.models.predict({id: 'monarch-butterfly-26127', version:'e7ce5a1b0c664a96a21c1dc457c1ff6e'}, this.state.input)
+    .then(response =>
+       this.setState({handleData: this.calculateButterflyData(response).response}))
+    .then(()=> this.setImageCount())
     .catch(er => console.log(er))
   }
-
 
 
   onRouteChange = () => {
@@ -107,6 +121,7 @@ class App extends React.Component {
     this.setState({isSignedIn : false})
     this.setState({handleData: ''})
     this.setState({imageUrl: ''})
+    this.clearUserData()
   }
 
   onRouteChange3 = () => {
@@ -133,7 +148,7 @@ class App extends React.Component {
       /> 
     <Nav onRouteChange2 = {this.onRouteChange2} isSignedIn = {this.state.isSignedIn}/>
     { this.state.route ==='signin' ?
-    <SignIn onRouteChange = {this.onRouteChange} onRouteChange3={this.onRouteChange3}/>
+    <SignIn onRouteChange = {this.onRouteChange} onRouteChange3={this.onRouteChange3} loadCurrentUserData={this.loadCurrentUserData}/>
     : (
       this.state.route ==='home' ?
     <div>

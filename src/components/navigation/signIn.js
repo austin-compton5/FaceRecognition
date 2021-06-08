@@ -6,7 +6,7 @@ class Signin extends React.Component {
     super(props);
       this.state = {
         signInEmail : '',
-        signInPassword: ''
+        signInPassword: '',
       }
     }
   onEmailChange = (event) =>{
@@ -26,15 +26,20 @@ class Signin extends React.Component {
         password: this.state.signInPassword
       })
     })
-    console.log(this.state)
-    this.props.onRouteChange()
+    .then(response => response.json())
+    .then(data => {
+      if(data.id){
+        this.props.loadCurrentUserData(data)
+        this.props.onRouteChange()
+      }
+    })
   }
   render(){
     const {onRouteChange, onRouteChange3} = this.props
     return(
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-1 mw6 shadow-5 center">
       <main className="pa4 black-80">
-      <form className="measure">
+      <div className="measure">
         <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
           <legend className="f4 fw6 ph0 mh0">Sign In</legend>
           <div className="mt3">
@@ -65,7 +70,7 @@ class Signin extends React.Component {
         <div className="lh-copy mt3">
           <p onClick = {onRouteChange3} href="#0" className="f6 link dim black db">Register</p>
         </div>
-      </form>
+      </div>
     </main>
     </article>
   )

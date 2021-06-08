@@ -31,24 +31,22 @@ class Register extends React.Component{
         email: this.state.registeredEmail,
         name: this.state.registeredName,
         password: this.state.registeredPassword,
-        id: Math.floor(Math.random()*(999-100+1)+100)
       })
     })
     .then(response => response.json())
     .then(user => {
-      if(user){
+      if(user.id){
         this.props.loadCurrentUserData(user)
         this.props.onRouteChange()
       }
     })
-    this.props.onRouteChange()
   }
     render(){
     const {onRouteChange} = this.props;
     return (
         <article className="br3 ba dark-gray b--black-10 mv4 w-75 w-50-m w-25-1 mw6 shadow-5 center">
         <main class="pa4 black-80">
-        <form class="measure">
+        <div class="measure">
           <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
             <legend class="f4 fw6 ph0 mh0">Register</legend>
             <div class="mt3">
@@ -79,7 +77,7 @@ class Register extends React.Component{
             <input class="f1 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" onClick = {this.onRegisteredsubmit} type="submit" value="Register"/>
           </div>
           </fieldset>
-        </form>
+        </div>
       </main>
       </article>
     )
